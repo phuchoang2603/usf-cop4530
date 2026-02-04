@@ -8,7 +8,6 @@
   outputs =
     { self, nixpkgs }:
     let
-      # Define supported systems
       supportedSystems = [
         "x86_64-linux"
         "aarch64-linux"
@@ -16,7 +15,7 @@
         "aarch64-darwin"
       ];
 
-      # Helper to generate an attrset '{ x86_64-linux = f "x86_64-linux"; ... }'
+      # This helper now creates pkgs for the system before passing it to your shell config
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
     in
     {
@@ -24,27 +23,35 @@
         system:
         let
           pkgs = import nixpkgs { inherit system; };
-          # Using Clang as the primary toolchain for better LSP (clangd) support
-          stdenv = pkgs.clangStdenv;
         in
         {
-          default = pkgs.mkShell.override { inherit stdenv; } {
-            # nativeBuildInputs: Tools that run on the host (Compilers, LSPs)
-            nativeBuildInputs = with pkgs; [
+          default = pkgs.mkShell {
+            packages = [
               # --- C++ Development ---
-              clang-tools # clangd, clang-format, clang-tidy
-              gdb # Debugger
-              gnumake # For your generic Makefile
+              pkgs.clang-tools # clangd, clang-format, clang-tidy
+              pkgs.gdb # Debugger
+              pkgs.gnumake # For your generic Makefile
 
-              # --- Documentation & Markdown ---
-              marksman # Markdown LSP
-              markdownlint-cli2 # Faster linter
-              pandoc # Document converter
+              # --- Documentation ---
+              pkgs.marksman # Markdown LSP
+              pkgs.markdownlint-cli2 # Faster linter
+              pkgs.pandoc # Document converter
 
-              # --- LaTeX (Optimized bundle) ---
-              # scheme-small includes most things needed for school/DSA reports
-              texliveSmall
+              # --- LaTeX ---
+              (pkgs.texlive.combine {
+                inherit (pkgs.texlive)
+                  scheme-medium
+                  framed
+                  fvextra # Often required by pandoc for code blocks
+                  ;
+              })
             ];
+
+            shellHook = ''
+              echo "🛡️  C++ DSA & Documentation Shell Loaded"
+              # Ensure clangd finds headers on NixOS
+              export CPATH="${pkgs.clang-tools}/resource-root/include:$CPATH"
+            '';
           };
         }
       );
