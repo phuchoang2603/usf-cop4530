@@ -25,6 +25,8 @@
             clang-tools
             gcc
             gnumake
+            marksman
+            markdownlint-cli
           ];
 
           shellHook = ''
