@@ -39,3 +39,9 @@
 
 # debug information files
 *.dwo
+#--------------------------------------------------#
+# The following was generated with gitignore.nvim: #
+#--------------------------------------------------#
+# Gitignore for the following technologies: direnv
+
+.direnv
