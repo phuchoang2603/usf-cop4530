@@ -1,14 +1,14 @@
-#include <iostream>
 #include <cstdlib>
+#include <iostream>
 
 using namespace std;
 
 int main() {
-    int count = 10; 
-    double price = 25.75; 
-    
-    cout << "Count: " << count << endl;
-    cout << "Price: " << price << endl;
-    
-    return EXIT_SUCCESS;
+  int count = 10;
+  double price = 25.75;
+
+  cout << "Count: " << count << endl;
+  cout << "Price: " << price << endl;
+
+  return EXIT_SUCCESS;
 }

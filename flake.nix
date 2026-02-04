@@ -22,13 +22,9 @@
       {
         devShells.default = pkgs.mkShell.override { inherit stdenv; } {
           nativeBuildInputs = with pkgs; [
-            cmake
-            cmake-language-server
-            ninja # Faster builds than Make
-            pkg-config # Helps find libraries
-            clang-tools # Provides clangd, clang-format, clang-tidy
-            gdb # Debugger
-            llvmPackages.lldb # LLVM Debugger
+            clang-tools
+            gcc
+            gnumake
           ];
 
           shellHook = ''
