@@ -4,25 +4,26 @@
 
 ### 1. (3 pts) Explain the purpose of the main() function in a C++ program
 
-The `main()` function serves as the starting point for execution in every C++ program. When a user runs an executable, the operating system loads the program into memory and begins execution from this function. It also returns an integer value to the operating system to indicate whether the program ended successfully.
+The main() function is basically the starting point for every C++ program. When run the program, the computer loads it into memory and starts executing instructions from main(). At the end, it returns an integer (usually 0) to the operating system to show if the program finished successfully or if there was an error.
 
 ### 2. (4 pts) List four fundamental data types in C++ and briefly describe each
 
-- `int`: Used to store whole numbers (integers).
-- `char`: Used to store a single character.
-- `bool`: Represents a Boolean value, which can be either true or false.
-- `double`: Used to store double-precision floating-point numbers (real numbers with decimals).
+- int: used for storing whole numbers (integers).
+- char: stores a single character, like a letter or symbol.
+- bool: holds a boolean value, which is just true or false.
+- double: used for floating-point numbers (decimals) with double precision.
 
 ### 4. (4 pts) Explain the difference between float and double. Include one situation where double is preferred
 
-- `float` represents a single-precision floating-point number, while `double` represents a double-precision floating-point number. The exact size depends on the implementation, but `double` typically offers more precision than `float`.
-- `double` is preferred when **more accuracy** is required for calculations. Additionally, default floating-point literals in C++ (e.g., `3.14`) are treated as `double` by default, making it a standard choice for general floating-point arithmetic.
+The main difference is precision. A float is a single-precision floating-point number, while a double is double-precision. This means double takes up more space but is much more precise.
+
+Use double when you need more accuracy in your calculations. Also, C++ treats decimal numbers like 3.14 as doubles by default, so it's usually the standard choice unless you're trying to save memory.
 
 ## Section 2: Control Structures (20 points)
 
 ### 6. (5 pts) Explain the difference between a while loop and a do-while loop. Include a short code snippet for each
 
-- **`while` loop:** This is an **entry-controlled** loop. The condition is evaluated _before_ the loop body executes. If the condition is false initially, the loop body never runs.
+- **`while` loop:** This checks the condition before the loop runs. If the condition is false right at the start, the code inside the loop will never run.
 
 ```cpp
 int i = 0;
@@ -32,7 +33,7 @@ while (i < 5) {
 }
 ```
 
-- **`do-while` loop:** This is an **exit-controlled** loop. The loop body executes first, and then the condition is evaluated. This guarantees that the loop body runs **at least once**, regardless of whether the condition is true or false.
+- **`do-while` loop:** This runs the code first, and then checks the condition. This guarantees that the loop runs at least once, even if the condition is false.
 
 ```cpp
 int i = 0;
@@ -58,27 +59,23 @@ double calculateArea(double length, double width) {
 
 ### 10. (4 pts) Explain function overloading in C++. Provide a small example with at least two overloaded functions
 
-- Function overloading allows multiple functions to share the same name as long as they have different parameter lists.
-
-- The compiler determines which function to call based on the arguments passed.
+Function overloading is when you have multiple functions with the same name, but they take different parameters. The compiler figures out which one to use based on the arguments you pass it.
 
 ```cpp
 # include <iostream>
 using namespace std;
 
-// Function 1: Calculates area of a square (1 parameter)
 int area(int side) {
 return side \* side;
 }
 
-// Function 2: Calculates area of a rectangle (2 parameters)
 int area(int length, int width) {
 return length \* width;
 }
 
 int main() {
-cout << "Square: " << area(5) << endl; // Calls Function 1
-cout << "Rectangle: " << area(5, 10) << endl; // Calls Function 2
+cout << "Square: " << area(5) << endl;
+cout << "Rectangle: " << area(5, 10) << endl;
 return 0;
 }
 ```
@@ -87,34 +84,29 @@ return 0;
 
 Difference:
 
-- Pass-by-value: The function receives a copy of the variable. Changes made to the parameter inside the function do not affect the original variable in the calling function. This is the default behavior for fundamental types like int.
-
-- Pass-by-reference: The function receives a reference (an alias) to the original variable's memory address. Changes made to the parameter inside the function directly modify the original variable.
+- Pass-by-value: The function gets a copy of the variable. If you change it inside the function, the original variable outside stays the same. This is the default for things like int.
+- Pass-by-reference: The function gets a reference to the actual variable's memory address. If you change it inside the function, it changes the original variable too.
 
 When to use Pass-by-Reference:
 
-- Modifying Data: When the function needs to change the value of the argument (e.g., a swap function).
-
-- Efficiency: When passing large data structures (like a large vector or string ) to avoid the performance cost of copying the entire object.
+- Modifying Data: If you actually want the function to update the variable .
+- Efficiency: If you are passing a really big object, passing by reference saves time because the computer doesn't have to copy the whole thing.
 
 ### 12. (4 pts) What are default arguments in C++? Write a function example that uses a default argument
 
-- Default arguments are values assigned to function parameters in the function declaration.
-
-- If the caller omits the argument for that parameter, the default value is used automatically.
+Default arguments are values assigned to function parameters in the function declaration. If the caller omits the argument for that parameter, the default value is used automatically.
 
 ```cpp
 #include <iostream>
 using namespace std;
 
-// Function with a default argument for 'b'
 void displaySum(int a, int b = 10) {
     cout << "Sum: " << a + b << endl;
 }
 
 int main() {
-    displaySum(5);      // Uses default b = 10. Output: 15
-    displaySum(5, 20);  // Overrides default.   Output: 25
+    displaySum(5);
+    displaySum(5, 20);
     return 0;
 }
 ```
@@ -123,22 +115,18 @@ int main() {
 
 ### 15. (4 pts) Explain encapsulation in C++. How is it implemented in a class?
 
-- Explanation:
-  - Encapsulation is the OOP concept of bundling data (variables) and the methods (functions) that operate on that data into a single unit, known as a class.
-  - Crucially, it also involves data hiding: restricting direct access to some of an object's components to prevent accidental modification or misuse.
-- Implementation:
-  - Data is typically marked as private so it cannot be accessed directly from outside the class.
-  - Methods (getters and setters) are marked as public to provide a controlled interface for reading or modifying that private data.
+Explanation: Encapsulation is bundling variables (data) and functions (methods) together into a single unit called a class. It also involves "data hiding," which means protecting the data so it can't be messed up by code outside the class.
+Implementation: We usually make the variables private so they can't be accessed directly. Then, we make public functions (getters and setters) to let outside code read or change the data safely.
 
 ### 16. (4 pts) Explain the difference between public, private, and protected access specifiers
 
-- `Public`: Members declared as public are accessible from anywhere in the program (inside the class, inside derived classes, and from main() or other functions).
-- `Private`: Members declared as private are accessible only within the class that defines them. They are hidden from derived classes and the outside world.
-- `Protected`: Members declared as protected are accessible within the class that defines them and within any classes that inherit from it (derived classes). However, they remain inaccessible to the outside world (like main()).
+- public: Anything declared public can be accessed from anywhere—inside the class, inside derived classes, or in main().
+- private: These can only be accessed inside the class itself. They are hidden from everything else.
+- protected: These are like private members, but with one difference: derived classes (child classes) can access them. Outside code like main() still can't touch them.
 
 ### 17. (6 pts) Explain inheritance in C++. Write a simple example where a class Square inherits from Rectangle
 
-Inheritance is a mechanism where a new class (called Child Class) acquires the properties and behaviors of an existing class (called Parent Class). This promotes code reusability.
+Inheritance is when a new class (Child/Derived class) takes on the properties and functions of an existing class (Parent/Base class). It's really useful for reusing code so you don't have to write the same thing twice.
 
 ```cpp
 #include <iostream>
@@ -179,25 +167,23 @@ int main() {
 
 ### 19. (5 pts) What is a memory leak? Explain two ways to prevent memory leaks in C++
 
-A memory leak occurs when a program allocates memory on the heap (using `new`) but fails to deallocate it (using `delete`) before the program terminates or before the pointer to that memory is lost. This causes the program to consume more memory than necessary, potentially leading to performance issues or crashes.
+A memory leak happens when allocate memory on the heap (using new) but forget to free it (using delete). The program keeps holding onto that memory even though it's not using it, which can slow things down or make the program crash.
 
-Two ways to prevent memory leaks:
+Two ways to prevent it:
 
-- Always Pair `new` with `delete`: For every manual allocation using new, ensure there is a corresponding `delete` in the code path where the memory is no longer needed.
-- Use Smart Pointers or Containers:
-  - `std::vector`: Automatically manages memory allocation and deallocation, growing and shrinking as needed.
-  - Smart Pointers: Use `std::unique_ptr` or `std::shared_ptr`, which automatically delete the associated memory when the pointer goes out of scope.
+- Pair new and delete: Whenever you write new, make sure there's a matching delete to free that memory.
+- Use Smart Pointers/Containers: Instead of managing memory manually, use things like std::vector or smart pointers (unique_ptr, shared_ptr). They handle the memory cleanup automatically when the variable goes out of scope.
 
 ## Section 6: Error Handling and const Usage (10 points)
 
 ### 21. (5 pts) Explain exception handling in C++. Write a simple try-catch example that handles division by zero
 
-Exception handling provides a way to transfer control from one part of a program to another when an unexpected error occurs (an "exception"). It prevents the program from crashing abruptly.
+Exception handling is a way to catch errors (exceptions) so the program doesn't just crash immediately. It lets you transfer control to a specific block of code to handle the problem.
 
-- `try`: Wraps the code that might generate an error.
-- `throw`: Used to signal that an error has occurred.
-- `catch`: Captures the exception thrown and handles it (e.g., prints an error message).
+- try: Put the risky code here.
+- throw: Signals that an error happened.
+- catch: Catches the error and decides what to do with it (like printing a message).
 
 ### 22. (5 pts) Explain the purpose of the const keyword. Write a short C++ program demonstrating a constant variable and a function parameter declared as const
 
-The `const` keyword (short for "constant") specifies that a variable's value cannot be modified after it is initialized.
+The const keyword makes a variable constant, meaning its value can't be changed once it's set.
