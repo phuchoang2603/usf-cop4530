@@ -45,3 +45,4 @@
 # Gitignore for the following technologies: direnv
 
 .direnv
+*.zip

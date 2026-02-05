@@ -4,7 +4,7 @@
 
 ### 1. (3 pts) Explain the purpose of the main() function in a C++ program
 
-The main() function is basically the starting point for every C++ program. When run the program, the computer loads it into memory and starts executing instructions from main(). At the end, it returns an integer (usually 0) to the operating system to show if the program finished successfully or if there was an error.
+The starting point for every C++ program. When run the program, the computer loads it into memory and starts executing instructions from main(). At the end, it returns an integer (usually 0) to the operating system to show if the program finished successfully or if there was an error.
 
 ### 2. (4 pts) List four fundamental data types in C++ and briefly describe each
 
@@ -23,7 +23,7 @@ Use double when you need more accuracy in your calculations. Also, C++ treats de
 
 ### 6. (5 pts) Explain the difference between a while loop and a do-while loop. Include a short code snippet for each
 
-- **`while` loop:** This checks the condition before the loop runs. If the condition is false right at the start, the code inside the loop will never run.
+- **`while` loop:** Checks condition before the loop runs. If false right at the start, the code inside the loop will never run.
 
 ```cpp
 int i = 0;
@@ -33,7 +33,7 @@ while (i < 5) {
 }
 ```
 
-- **`do-while` loop:** This runs the code first, and then checks the condition. This guarantees that the loop runs at least once, even if the condition is false.
+- **`do-while` loop:** Runs the code first, and then checks the condition. This guarantees that the loop runs at least once, even if the condition is false.
 
 ```cpp
 int i = 0;
@@ -59,7 +59,7 @@ double calculateArea(double length, double width) {
 
 ### 10. (4 pts) Explain function overloading in C++. Provide a small example with at least two overloaded functions
 
-Function overloading is when you have multiple functions with the same name, but they take different parameters. The compiler figures out which one to use based on the arguments you pass it.
+When you have multiple same name functions, but different parameters, the compiler tries to choose which one to use based on the arguments you pass it.
 
 ```cpp
 # include <iostream>
@@ -120,7 +120,7 @@ Implementation: We usually make the variables private so they can't be accessed 
 
 ### 16. (4 pts) Explain the difference between public, private, and protected access specifiers
 
-- public: Anything declared public can be accessed from anywhere—inside the class, inside derived classes, or in main().
+- public: Anything declared public can be accessed anywhere: inside the class, inside derived classes, or in main().
 - private: These can only be accessed inside the class itself. They are hidden from everything else.
 - protected: These are like private members, but with one difference: derived classes (child classes) can access them. Outside code like main() still can't touch them.
 
