@@ -48,12 +48,6 @@
               pkgs.gcc
               pkgs.clang-tools
               pkgs.gdb
-              pkgs.marksman
-              pkgs.markdownlint-cli2
-              pkgs.pandoc
-              (pkgs.texlive.combine {
-                inherit (pkgs.texlive) scheme-medium framed fvextra;
-              })
             ];
 
             shellHook = ''
