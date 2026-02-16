@@ -1,6 +1,4 @@
 #include <iostream>
-#include <limits>
-#include <sstream>
 #include <string>
 
 using namespace std;
@@ -112,9 +110,12 @@ private:
   static string formatDuration(int seconds) {
     int minutes = seconds / 60;
     int remaining = seconds % 60;
-    ostringstream oss;
-    oss << minutes << ':' << (remaining < 10 ? "0" : "") << remaining;
-    return oss.str();
+    string result = to_string(minutes) + ":";
+    if (remaining < 10) {
+      result += "0";
+    }
+    result += to_string(remaining);
+    return result;
   }
 
 public:
@@ -255,11 +256,10 @@ static int readInt() {
   int value;
   while (!(cin >> value)) {
     cin.clear();
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    cout << "Please enter a valid number: ";
+    cin.ignore(10000, '\n');
+    cout << "Please enter a number: ";
   }
-
-  cin.ignore(numeric_limits<streamsize>::max(), '\n');
+  cin.ignore(10000, '\n');
   return value;
 }
 
