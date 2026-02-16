@@ -3,7 +3,7 @@
 ## Group Members
 
 - Felix Hoang
-- Tran Hoang Nam
+- Hoang Nam Tran
 
 ## Project Name
 
@@ -23,9 +23,9 @@ Music Playlist Manager
 ## How to Interact With the Program
 
 - **Add song**: Enter the title, artist, and duration in seconds.
-- **Remove song**: Enter the song position (1-based index).
+- **Remove song**: Remove a song using position.
 - **Next/Previous**: Move forward or backward in the playlist.
-- **Jump to position**: Use a 1-based index to jump to a song.
+- **Jump to position**: Jump to a song using position.
 - **Show playlist**: Prints all songs and highlights the current track.
 - **Show current song**: Displays the active track.
 

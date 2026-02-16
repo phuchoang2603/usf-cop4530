@@ -26,10 +26,13 @@ private:
   size_t listSize;
 
 public:
+  // Initialize an empty list.
   DoublyLinkedList() : head(nullptr), tail(nullptr), listSize(0) {}
 
+  // Clean up all nodes.
   ~DoublyLinkedList() { clear(); }
 
+  // Remove all nodes and reset the list.
   void clear() {
     while (head != nullptr) {
       Node *temp = head;
@@ -40,10 +43,13 @@ public:
     listSize = 0;
   }
 
+  // Return the number of nodes.
   size_t size() const { return listSize; }
 
+  // Return the head node pointer.
   Node *getHead() const { return head; }
 
+  // Return the tail node pointer.
   Node *getTail() const { return tail; }
 
   // Append at the end of the list.
@@ -112,8 +118,10 @@ private:
   }
 
 public:
+  // Initialize an empty music player.
   MusicPlayer() : current(nullptr) {}
 
+  // Add a new song to the playlist.
   void addSong(const Song &song) {
     playlist.push_back(song);
     if (current == nullptr) {
@@ -121,6 +129,7 @@ public:
     }
   }
 
+  // Remove the song at a specific position.
   void removeSong(size_t index) {
     if (playlist.size() == 0) {
       cout << "Your playlist is empty, so there is nothing to remove." << endl;
@@ -150,6 +159,7 @@ public:
     playlist.remove(target);
   }
 
+  // Move to the next song if possible.
   void nextSong() {
     if (current == nullptr) {
       cout << "Your playlist is empty." << endl;
@@ -164,6 +174,7 @@ public:
     current = current->next;
   }
 
+  // Move to the previous song if possible.
   void previousSong() {
     if (current == nullptr) {
       cout << "Your playlist is empty." << endl;
@@ -178,6 +189,7 @@ public:
     current = current->prev;
   }
 
+  // Jump to a specific position in the playlist.
   void jumpTo(size_t index) {
     if (playlist.size() == 0) {
       cout << "Your playlist is empty." << endl;
@@ -200,6 +212,7 @@ public:
     current = cursor;
   }
 
+  // Print the full playlist with the current song marked.
   void showPlaylist() const {
     if (playlist.size() == 0) {
       cout << "Your playlist is empty." << endl;
@@ -224,6 +237,7 @@ public:
     }
   }
 
+  // Display the current song.
   void displayCurrent() const {
     if (current == nullptr) {
       cout << "Your playlist is empty." << endl;
@@ -236,6 +250,7 @@ public:
   }
 };
 
+// Read an integer from standard input with validation.
 static int readInt() {
   int value;
   while (!(cin >> value)) {
@@ -248,6 +263,7 @@ static int readInt() {
   return value;
 }
 
+// Prompt the user for song details.
 static Song promptSong() {
   Song song;
   cout << "Enter the song title: ";
@@ -259,6 +275,7 @@ static Song promptSong() {
   return song;
 }
 
+// Print the main menu options.
 static void printMenu() {
   cout << "\nMusic Playlist Manager\n"
        << "1) Add a song\n"
@@ -272,6 +289,7 @@ static void printMenu() {
        << "What would you like to do? ";
 }
 
+// Program entry point.
 int main() {
   MusicPlayer player;
   bool running = true;
