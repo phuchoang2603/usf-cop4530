@@ -1,11 +1,7 @@
-#include <algorithm>
-#include <chrono>
 #include <iostream>
 #include <limits>
-#include <random>
 #include <string>
 #include <sstream>
-#include <vector>
 
 // Keep the code limited to one namespace to match existing style.
 using namespace std;
@@ -109,8 +105,6 @@ class MusicPlayer {
  private:
   DoublyLinkedList<Song> playlist;
   DoublyLinkedList<Song>::Node *current;
-  int volume;
-  bool shuffleActive;
 
   static string formatDuration(int seconds) {
     int minutes = seconds / 60;
@@ -120,16 +114,8 @@ class MusicPlayer {
     return oss.str();
   }
 
-  void rebuildFromVector(const vector<Song> &order) {
-    playlist.clear();
-    for (const Song &song : order) {
-      playlist.push_back(song);
-    }
-    current = playlist.getHead();
-  }
-
  public:
-  MusicPlayer() : current(nullptr), volume(50), shuffleActive(false) {}
+  MusicPlayer() : current(nullptr) {}
 
   void addSong(const Song &song) {
     playlist.push_back(song);
@@ -214,7 +200,7 @@ class MusicPlayer {
       return;
     }
 
-    cout << "Playlist (" << (shuffleActive ? "shuffled" : "ordered") << "):\n";
+    cout << "Playlist:\n";
     DoublyLinkedList<Song>::Node *cursor = playlist.getHead();
     size_t index = 0;
     while (cursor != nullptr) {
@@ -241,37 +227,7 @@ class MusicPlayer {
          << formatDuration(song.durationSeconds) << ")" << endl;
   }
 
-  void toggleShuffle() {
-    if (playlist.size() <= 1) {
-      cout << "Need at least two songs to shuffle." << endl;
-      return;
-    }
-
-    vector<Song> order;
-    order.reserve(playlist.size());
-    for (DoublyLinkedList<Song>::Node *cursor = playlist.getHead(); cursor != nullptr;
-         cursor = cursor->next) {
-      order.push_back(cursor->data);
-    }
-
-    unsigned seed = static_cast<unsigned>(chrono::high_resolution_clock::now().time_since_epoch().count());
-    shuffle(order.begin(), order.end(), default_random_engine(seed));
-
-    rebuildFromVector(order);
-    shuffleActive = true;
-  }
-
-  void setVolume(int requestedVolume) {
-    if (requestedVolume < 0) {
-      volume = 0;
-    } else if (requestedVolume > 100) {
-      volume = 100;
-    } else {
-      volume = requestedVolume;
-    }
-
-    cout << "Volume set to " << volume << "%" << endl;
-  }
+  
 };
 
 static int readInt() {
@@ -305,9 +261,7 @@ static void printMenu() {
        << "4) Previous song\n"
        << "5) Jump to position\n"
        << "6) Show playlist\n"
-       << "7) Shuffle playlist\n"
-       << "8) Set volume\n"
-       << "9) Show current song\n"
+       << "7) Show current song\n"
        << "0) Exit\n"
        << "Choice: ";
 }
@@ -346,13 +300,6 @@ int main() {
         player.showPlaylist();
         break;
       case 7:
-        player.toggleShuffle();
-        break;
-      case 8:
-        cout << "Set volume (0-100): ";
-        player.setVolume(readInt());
-        break;
-      case 9:
         player.displayCurrent();
         break;
       case 0:
