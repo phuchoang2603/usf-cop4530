@@ -1,9 +1,8 @@
 #include <iostream>
 #include <limits>
-#include <string>
 #include <sstream>
+#include <string>
 
-// Keep the code limited to one namespace to match existing style.
 using namespace std;
 
 struct Song {
@@ -12,9 +11,8 @@ struct Song {
   int durationSeconds;
 };
 
-template <typename T>
-class DoublyLinkedList {
- public:
+template <typename T> class DoublyLinkedList {
+public:
   struct Node {
     T data;
     Node *prev;
@@ -22,12 +20,12 @@ class DoublyLinkedList {
     explicit Node(const T &value) : data(value), prev(nullptr), next(nullptr) {}
   };
 
- private:
+private:
   Node *head;
   Node *tail;
   size_t listSize;
 
- public:
+public:
   DoublyLinkedList() : head(nullptr), tail(nullptr), listSize(0) {}
 
   ~DoublyLinkedList() { clear(); }
@@ -90,8 +88,7 @@ class DoublyLinkedList {
   }
 
   // Find first node that satisfies the predicate.
-  template <typename Predicate>
-  Node *findFirst(Predicate predicate) const {
+  template <typename Predicate> Node *findFirst(Predicate predicate) const {
     for (Node *cur = head; cur != nullptr; cur = cur->next) {
       if (predicate(cur->data)) {
         return cur;
@@ -102,7 +99,7 @@ class DoublyLinkedList {
 };
 
 class MusicPlayer {
- private:
+private:
   DoublyLinkedList<Song> playlist;
   DoublyLinkedList<Song>::Node *current;
 
@@ -114,7 +111,7 @@ class MusicPlayer {
     return oss.str();
   }
 
- public:
+public:
   MusicPlayer() : current(nullptr) {}
 
   void addSong(const Song &song) {
@@ -124,20 +121,28 @@ class MusicPlayer {
     }
   }
 
-  void removeSong(const string &title) {
+  void removeSong(size_t index) {
     if (playlist.size() == 0) {
-      cout << "Playlist is empty. Nothing to remove." << endl;
+      cout << "Your playlist is empty, so there is nothing to remove." << endl;
       return;
     }
 
-    DoublyLinkedList<Song>::Node *target = playlist.findFirst(
-        [&title](const Song &song) { return song.title == title; });
+    // Walk the list to the requested index.
+    DoublyLinkedList<Song>::Node *cursor = playlist.getHead();
+    size_t currentIndex = 0;
+    while (cursor != nullptr && currentIndex < index) {
+      cursor = cursor->next;
+      ++currentIndex;
+    }
 
-    if (target == nullptr) {
-      cout << "No song found with title '" << title << "'." << endl;
+    if (cursor == nullptr) {
+      cout << "Position " << index + 1 << " is out of range." << endl;
       return;
     }
 
+    DoublyLinkedList<Song>::Node *target = cursor;
+
+    // If we remove the current song, move to a neighbor.
     if (target == current) {
       current = current->next != nullptr ? current->next : current->prev;
     }
@@ -147,12 +152,12 @@ class MusicPlayer {
 
   void nextSong() {
     if (current == nullptr) {
-      cout << "Playlist is empty." << endl;
+      cout << "Your playlist is empty." << endl;
       return;
     }
 
     if (current->next == nullptr) {
-      cout << "You are at the end of the playlist." << endl;
+      cout << "You're already at the end of the playlist." << endl;
       return;
     }
 
@@ -161,12 +166,12 @@ class MusicPlayer {
 
   void previousSong() {
     if (current == nullptr) {
-      cout << "Playlist is empty." << endl;
+      cout << "Your playlist is empty." << endl;
       return;
     }
 
     if (current->prev == nullptr) {
-      cout << "You are at the beginning of the playlist." << endl;
+      cout << "You're already at the beginning of the playlist." << endl;
       return;
     }
 
@@ -175,10 +180,11 @@ class MusicPlayer {
 
   void jumpTo(size_t index) {
     if (playlist.size() == 0) {
-      cout << "Playlist is empty." << endl;
+      cout << "Your playlist is empty." << endl;
       return;
     }
 
+    // Walk the list until the requested position.
     DoublyLinkedList<Song>::Node *cursor = playlist.getHead();
     size_t currentIndex = 0;
     while (cursor != nullptr && currentIndex < index) {
@@ -187,7 +193,7 @@ class MusicPlayer {
     }
 
     if (cursor == nullptr) {
-      cout << "Index " << index << " is out of range." << endl;
+      cout << "Position " << index + 1 << " is out of range." << endl;
       return;
     }
 
@@ -196,19 +202,21 @@ class MusicPlayer {
 
   void showPlaylist() const {
     if (playlist.size() == 0) {
-      cout << "Playlist is empty." << endl;
+      cout << "Your playlist is empty." << endl;
       return;
     }
 
-    cout << "Playlist:\n";
+    cout << "Here's your playlist:\n";
+    // Traverse from head to tail to print all nodes.
     DoublyLinkedList<Song>::Node *cursor = playlist.getHead();
     size_t index = 0;
     while (cursor != nullptr) {
       cout << (cursor == current ? "> " : "  ");
-      cout << index + 1 << ". " << cursor->data.title << " by " << cursor->data.artist
-           << " (" << formatDuration(cursor->data.durationSeconds) << ")";
+      cout << index + 1 << ". " << cursor->data.title << " by "
+           << cursor->data.artist << " ("
+           << formatDuration(cursor->data.durationSeconds) << ")";
       if (cursor == current) {
-        cout << " <- current";
+        cout << " <- now playing";
       }
       cout << '\n';
       cursor = cursor->next;
@@ -218,7 +226,7 @@ class MusicPlayer {
 
   void displayCurrent() const {
     if (current == nullptr) {
-      cout << "Playlist is empty." << endl;
+      cout << "Your playlist is empty." << endl;
       return;
     }
 
@@ -226,8 +234,6 @@ class MusicPlayer {
     cout << "Now playing: " << song.title << " by " << song.artist << " ("
          << formatDuration(song.durationSeconds) << ")" << endl;
   }
-
-  
 };
 
 static int readInt() {
@@ -244,26 +250,26 @@ static int readInt() {
 
 static Song promptSong() {
   Song song;
-  cout << "Song title: ";
+  cout << "Enter the song title: ";
   getline(cin, song.title);
-  cout << "Artist: ";
+  cout << "Enter the artist name: ";
   getline(cin, song.artist);
-  cout << "Duration in seconds: ";
+  cout << "Enter the duration in seconds: ";
   song.durationSeconds = readInt();
   return song;
 }
 
 static void printMenu() {
   cout << "\nMusic Playlist Manager\n"
-       << "1) Add song\n"
-       << "2) Remove song\n"
-       << "3) Next song\n"
-       << "4) Previous song\n"
-       << "5) Jump to position\n"
-       << "6) Show playlist\n"
-       << "7) Show current song\n"
+       << "1) Add a song\n"
+       << "2) Remove a song\n"
+       << "3) Play next song\n"
+       << "4) Play previous song\n"
+       << "5) Jump to a position\n"
+       << "6) Show the playlist\n"
+       << "7) Show the current song\n"
        << "0) Exit\n"
-       << "Choice: ";
+       << "What would you like to do? ";
 }
 
 int main() {
@@ -275,42 +281,40 @@ int main() {
     int choice = readInt();
 
     switch (choice) {
-      case 1:
-        player.addSong(promptSong());
-        break;
-      case 2:
-        cout << "Enter title to remove: ";
-        {
-          string title;
-          getline(cin, title);
-          player.removeSong(title);
-        }
-        break;
-      case 3:
-        player.nextSong();
-        break;
-      case 4:
-        player.previousSong();
-        break;
-      case 5:
-        cout << "Position to jump to (1-based): ";
-        player.jumpTo(static_cast<size_t>(readInt() - 1));
-        break;
-      case 6:
-        player.showPlaylist();
-        break;
-      case 7:
-        player.displayCurrent();
-        break;
-      case 0:
-        running = false;
-        break;
-      default:
-        cout << "Unknown choice, try again." << endl;
-        break;
+    case 1:
+      player.addSong(promptSong());
+      break;
+    case 2:
+      player.showPlaylist();
+      cout << "Enter the position of the song to remove (1-n): ";
+      player.removeSong(static_cast<size_t>(readInt() - 1));
+      break;
+    case 3:
+      player.nextSong();
+      break;
+    case 4:
+      player.previousSong();
+      break;
+    case 5:
+      player.showPlaylist();
+      cout << "Enter the position to jump to (1-n): ";
+      player.jumpTo(static_cast<size_t>(readInt() - 1));
+      break;
+    case 6:
+      player.showPlaylist();
+      break;
+    case 7:
+      player.displayCurrent();
+      break;
+    case 0:
+      running = false;
+      break;
+    default:
+      cout << "That option isn't available. Please try again." << endl;
+      break;
     }
   }
 
-  cout << "Exiting Music Playlist Manager." << endl;
+  cout << "Thanks for using Music Playlist Manager. Goodbye!" << endl;
   return 0;
 }
