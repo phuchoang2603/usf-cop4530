@@ -90,16 +90,6 @@ public:
     delete target;
     --listSize;
   }
-
-  // Find first node that satisfies the predicate.
-  template <typename Predicate> Node *findFirst(Predicate predicate) const {
-    for (Node *cur = head; cur != nullptr; cur = cur->next) {
-      if (predicate(cur->data)) {
-        return cur;
-      }
-    }
-    return nullptr;
-  }
 };
 
 class MusicPlayer {
@@ -249,6 +239,9 @@ public:
     cout << "Now playing: " << song.title << " by " << song.artist << " ("
          << formatDuration(song.durationSeconds) << ")" << endl;
   }
+
+  // Get total number of songs.
+  int displayTotal() const { return playlist.size(); }
 };
 
 // Read an integer from standard input with validation.
@@ -276,8 +269,8 @@ static Song promptSong() {
 }
 
 // Print the main menu options.
-static void printMenu() {
-  cout << "\nMusic Playlist Manager\n"
+static void printMenu(int totalSongs) {
+  cout << "\nMusic Playlist Manager (Total songs: " << totalSongs << ")\n"
        << "1) Add a song\n"
        << "2) Remove a song\n"
        << "3) Play next song\n"
@@ -295,7 +288,7 @@ int main() {
   bool running = true;
 
   while (running) {
-    printMenu();
+    printMenu(player.displayTotal());
     int choice = readInt();
 
     switch (choice) {
@@ -304,7 +297,8 @@ int main() {
       break;
     case 2:
       player.showPlaylist();
-      cout << "Enter the position of the song to remove (1-n): ";
+      cout << "Enter the position of the song to remove (1-"
+           << player.displayTotal() << "): ";
       player.removeSong(static_cast<size_t>(readInt() - 1));
       break;
     case 3:
@@ -315,7 +309,8 @@ int main() {
       break;
     case 5:
       player.showPlaylist();
-      cout << "Enter the position to jump to (1-n): ";
+      cout << "Enter the position to jump to (1-" << player.displayTotal()
+           << "): ";
       player.jumpTo(static_cast<size_t>(readInt() - 1));
       break;
     case 6:
