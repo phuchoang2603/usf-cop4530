@@ -5,10 +5,6 @@
 - Felix Hoang
 - Hoang Nam Tran
 
-## Project Name
-
-Music Playlist Manager
-
 ## How to Run on the Student Cluster
 
 1. Compile the program:
