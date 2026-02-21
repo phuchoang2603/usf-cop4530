@@ -6,6 +6,11 @@ struct Node {
   int data;
   Node *prev;
   Node *next;
+  Node(int val) {
+    data = val;
+    prev = nullptr;
+    next = nullptr;
+  }
 };
 
 class LinkedList {
@@ -44,10 +49,7 @@ public:
   // Insert new node at tail
   void insert(int value) {
     // allocate new node
-    Node *newNode = new Node();
-    newNode->data = value;
-    newNode->next = nullptr;
-    newNode->prev = nullptr;
+    Node *newNode = new Node(value);
 
     if (head == nullptr) {
       head = tail = newNode;
