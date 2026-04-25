@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -16,12 +17,36 @@ void printMenu() {
   cout << "Choice: ";
 }
 
+// Converts a string to an integer if possible.
+bool parseInt(string text, int &value) {
+  stringstream ss(text);
+  char extra;
+
+  if (!(ss >> value)) {
+    return false;
+  }
+  if (ss >> extra) {
+    return false;
+  }
+  return true;
+}
+
 // Runs interactive graph menu.
 void runMenu(Graph &graph) {
   while (true) {
     printMenu();
+    string choiceInput;
+    cin >> choiceInput;
+
+    if (choiceInput == "exit") {
+      break;
+    }
+
     int choice;
-    cin >> choice;
+    if (!parseInt(choiceInput, choice)) {
+      cout << "Invalid input" << endl;
+      continue;
+    }
 
     switch (choice) {
     case 1: {
