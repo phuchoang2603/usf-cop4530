@@ -14,27 +14,12 @@ private:
     Node *nextSibling;
 
     Node(E value)
-        : data(value), parent(nullptr), firstChild(nullptr), nextSibling(nullptr) {}
+        : data(value), parent(nullptr), firstChild(nullptr),
+          nextSibling(nullptr) {}
   };
 
   Node *rootNode;
   int nodeCount;
-
-  // Deletes all nodes recursively.
-  void clearNode(Node *node) {
-    if (node == nullptr) {
-      return;
-    }
-
-    Node *child = node->firstChild;
-    while (child != nullptr) {
-      Node *nextChild = child->nextSibling;
-      clearNode(child);
-      child = nextChild;
-    }
-
-    delete node;
-  }
 
   // Collects preorder positions recursively.
   void collectPreorder(Node *node, vector<Node *> &items) {
@@ -63,7 +48,9 @@ public:
     bool isRoot() { return node != nullptr && node->parent == nullptr; }
     bool isExternal() { return node != nullptr && node->firstChild == nullptr; }
     bool isInternal() { return node != nullptr && node->firstChild != nullptr; }
-    Position parent() { return Position(node == nullptr ? nullptr : node->parent); }
+    Position parent() {
+      return Position(node == nullptr ? nullptr : node->parent);
+    }
     Position firstChild() {
       return Position(node == nullptr ? nullptr : node->firstChild);
     }
@@ -74,16 +61,6 @@ public:
 
   // Initializes an empty linked tree.
   LinkedTree() : rootNode(nullptr), nodeCount(0) {}
-
-  // Releases all nodes.
-  ~LinkedTree() { clear(); }
-
-  // Clears tree content.
-  void clear() {
-    clearNode(rootNode);
-    rootNode = nullptr;
-    nodeCount = 0;
-  }
 
   // Returns true if tree has no nodes.
   bool isEmpty() { return rootNode == nullptr; }
@@ -96,7 +73,6 @@ public:
 
   // Adds or replaces root node.
   Position addRoot(E value) {
-    clear();
     rootNode = new Node(value);
     nodeCount = 1;
     return Position(rootNode);

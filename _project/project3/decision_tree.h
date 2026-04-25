@@ -237,12 +237,6 @@ public:
   // Initializes an empty decision tree.
   DecisionTree() {}
 
-  // Clears current tree content.
-  void clear() {
-    tree.clear();
-    positionMap.clear();
-  }
-
   // Parses one input line into a record.
   bool parseLine(string line, bool isRootLine, Record &record) {
     string cleaned = ltrim(line);
@@ -294,8 +288,6 @@ public:
     if (!in.is_open()) {
       return false;
     }
-
-    clear();
 
     vector<Record> records;
     string line;
